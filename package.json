@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sassDev": "gulp develop",
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,11 @@
     "gulp-sass": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "postcss": "^8.3.6",
+    "sass": "^1.37.5",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.0"
   }
 }
