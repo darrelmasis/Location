@@ -1,0 +1,46 @@
+{
+  "name": "location",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darrelmasis/Location.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Darrel Masis",
+    "email": "darrelmasis@gmail.com",
+    "url": "https://github.io/darrelmasis"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darrelmasis/Location/issues",
+    "email": "darrelmasis@gmail.com"
+  },
+  "homepage": "https://github.com/darrelmasis/Location#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/register": "^7.14.5",
+    "autoprefixer": "^10.3.1",
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.27.5",
+    "browserify": "^17.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^9.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "postcss": "^8.3.6",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
