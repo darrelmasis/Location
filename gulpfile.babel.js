@@ -58,6 +58,31 @@ const path = {
   done()
 }
 
+/**
+ * Compila JavaScript para producción
+ */
+ const scripts = done => {
+  browserify(path.scripts.src)
+      .transform(babelify, {
+          global: true
+      })
+      .bundle()
+      .on('error', function (err) {
+          console.log(err)
+          this.emit('end')
+      })
+      .pipe(source('scripts.js'))
+      .pipe(buffer())
+      .pipe(minify({
+          ext: {
+              min: '.min.js'
+          }
+      }))
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(path.scripts.dest))
+  done()
+}
 
 /**
  * Inicia el servidor local cn BrowserSync
@@ -71,7 +96,7 @@ const path = {
       open: false
   })
   gulp.watch(path.styles.src, styles, server.reload)
-  // gulp.watch(path.scripts.src, scripts, server.reload)
+  gulp.watch(path.scripts.src, scripts, server.reload)
   gulp.watch(['./*.html', './**/*.js']).on('change', server.reload)
   done()
 }
