@@ -20,17 +20,35 @@ exports.getData = getData;
 
 var _getData = require("./modules/getData");
 
+var customersList = document.getElementById("customersList");
+var search = document.getElementById("search");
 (0, _getData.getData)('../../dist/json/customers.json').then(function (data) {
   var customers = data.customers;
-  var customerData = customers.find(function (item) {
-    return item.id == "H1128";
+  search.addEventListener('keyup', function () {
+    var searchValue = search.value;
+    var expression = new RegExp("".concat(searchValue, ".*"), "i");
+    var query = '';
+
+    if (searchValue != '') {
+      query = customers.filter(function (customer) {
+        return expression.test(customer.name);
+      });
+    }
+
+    if (customersList.hasChildNodes()) {
+      while (customersList.childNodes.length >= 1) {
+        customersList.removeChild(customersList.firstChild);
+      }
+    }
+
+    query.forEach(function (customer) {
+      var listItem = document.createElement('a');
+      listItem.setAttribute = 'href="#"';
+      listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start');
+      listItem.textContent = "".concat(customer.name, " - ").concat(customer.id);
+      customersList.appendChild(listItem);
+    });
   });
-  console.log(customerData);
-  var test = customers.filter(function (item) {
-    return item.type == "Crédito" && item.seller == "H049";
-  });
-  console.dir(test); // customers.forEach(customer => {
-  // });
 });
 
 },{"./modules/getData":1}]},{},[2]);

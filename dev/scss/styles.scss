@@ -1,1 +1,13 @@
 @import "./vendors/bootstrap";
+
+body {
+  background-color: #e6e6e6;
+}
+
+.list-group--custom {
+  position: absolute;
+  left: 0;
+  right:0;
+  max-height: 300px;
+  overflow-y: scroll;
+}

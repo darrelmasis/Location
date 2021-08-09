@@ -1,19 +1,31 @@
 import { getData } from "./modules/getData";
 
+const customersList = document.getElementById("customersList")
+const search = document.getElementById("search")
+
 getData('../../dist/json/customers.json').then(data => {
   let customers = data.customers
 
-  let customerData = customers.find(item => item.id == "H1128")
+  search.addEventListener('keyup', () => {
+    let searchValue = search.value;
+    let expression = new RegExp(`${searchValue}.*`, "i")
+    let query = ''
+    if (searchValue != '') {
+      query = customers.filter(customer => expression.test(customer.name))
+    }
 
-  console.log(customerData)
+    if (customersList.hasChildNodes()) {
+      while (customersList.childNodes.length >= 1) {
+        customersList.removeChild(customersList.firstChild)
+      }
+    }
 
-  let test = customers.filter(item => item.type == "Crédito" && item.seller == "H049")
-
-  console.dir(test)
-
-  // customers.forEach(customer => {
-  // });
-
+    query.forEach(customer => {
+      const listItem = document.createElement('a')
+      listItem.setAttribute = 'href="#"'
+      listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start')
+      listItem.textContent = `${customer.name} - ${customer.id}`
+      customersList.appendChild(listItem)
+    });
+  })
 })
-
-
