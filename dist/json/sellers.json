@@ -1,0 +1,108 @@
+{
+  "sellers": [
+    {
+      "id": "H010",
+      "name": "Franklin Javier Urbina Silva"
+    },
+    {
+      "id": "H015",
+      "name": "Cuentas Especiales"
+    },
+    {
+      "id": "H028",
+      "name": "Marlon Eusebio Zepeda Castillo"
+    },
+    {
+      "id": "H029",
+      "name": "Juan Enoc Alvarado Muñoz"
+    },
+    {
+      "id": "H032",
+      "name": "Osman Joell Delgado Rodriguez"
+    },
+    {
+      "id": "H034",
+      "name": "Alexander Granja Selva"
+    },
+    {
+      "id": "H035",
+      "name": "Jose Angel Rivas Garcia"
+    },
+    {
+      "id": "H037",
+      "name": "Francisco Jose Gutierrez Bustos"
+    },
+    {
+      "id": "H038",
+      "name": "Francisco Javier Campbell Ramirez"
+    },
+    {
+      "id": "H039",
+      "name": "Carlos Jose Delgado Rosales"
+    },
+    {
+      "id": "H040",
+      "name": "Luis Enrrique Vado Castillo"
+    },
+    {
+      "id": "H041",
+      "name": "Hipolito Daniel Alvarado Soza"
+    },
+    {
+      "id": "H042",
+      "name": "Edson Jesus Fitoria Silva"
+    },
+    {
+      "id": "H044",
+      "name": "Francisco Javier Chamorro Sandino"
+    },
+    {
+      "id": "H046",
+      "name": "Mauricio Javier Cano Zamora"
+    },
+    {
+      "id": "H048",
+      "name": "Osmel Gheraldi Sanchez Luna"
+    },
+    {
+      "id": "H049",
+      "name": "Ervin Enrique Barraza Gonzalez"
+    },
+    {
+      "id": "H051",
+      "name": "Juan Carlos Rios Molinares"
+    },
+    {
+      "id": "H052",
+      "name": "Maria Amalia Cedeño Lanzas (Mga)"
+    },
+    {
+      "id": "H054",
+      "name": "Sixto Alcides Carrasco Benavides"
+    },
+    {
+      "id": "H057",
+      "name": "Sergei Ulianov Caceres Castellon"
+    },
+    {
+      "id": "H058",
+      "name": "Javier Antonio Romero Calero"
+    },
+    {
+      "id": "H059",
+      "name": "Jose Mauricio Jimenez Galeano"
+    },
+    {
+      "id": "H060",
+      "name": "Jairo Jose Hondoy Morales"
+    },
+    {
+      "id": "H062",
+      "name": "William Gabriel Martinez Garay"
+    },
+    {
+      "id": "H800",
+      "name": "Oficina Granada Harina"
+    }
+  ]
+}
