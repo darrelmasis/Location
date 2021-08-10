@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getData = void 0;
+exports.search = exports.getData = void 0;
 
 var getData = function getData(url) {
   var response = fetch(url).then(function (response) {
@@ -12,20 +12,42 @@ var getData = function getData(url) {
   });
   return response;
 };
+/**
+ * 
+ * @param {string} query 
+ * @param {array} data 
+ */
+
 
 exports.getData = getData;
+
+var search = function search(query, data) {
+  var expression = new RegExp("".concat(query), 'i');
+  data.filter(function (result) {
+    return expression.test(result);
+  });
+};
+
+exports.search = search;
 
 },{}],2:[function(require,module,exports){
 "use strict";
 
 var _getData = require("./modules/getData");
 
+/**
+ * ***Tareas***
+ * Módulo para crear elementos del DOM
+ * Módulo de busqueda y respuesta
+ * 
+ */
 var customersList = document.getElementById("customersList");
-var search = document.getElementById("search");
+var searchInput = document.getElementById("search");
 (0, _getData.getData)('../../dist/json/customers.json').then(function (data) {
   var customers = data.customers;
-  search.addEventListener('keyup', function () {
-    var searchValue = search.value;
+  searchInput.addEventListener('keyup', function () {
+    var queryResult = (0, _getData.search)();
+    var searchValue = _getData.search.value;
     var expression = new RegExp("".concat(searchValue, ".*"), "i");
     var query = '';
 
@@ -33,6 +55,7 @@ var search = document.getElementById("search");
       query = customers.filter(function (customer) {
         return expression.test(customer.name);
       });
+      customersList.style.display = "block";
     }
 
     if (customersList.hasChildNodes()) {
@@ -41,13 +64,28 @@ var search = document.getElementById("search");
       }
     }
 
-    query.forEach(function (customer) {
-      var listItem = document.createElement('a');
-      listItem.setAttribute = 'href="#"';
-      listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start');
-      listItem.textContent = "".concat(customer.name, " - ").concat(customer.id);
-      customersList.appendChild(listItem);
-    });
+    if (query.length > 0) {
+      var limit = 5;
+
+      if (query.length < limit) {
+        limit = query.length;
+      }
+
+      for (var i = 0; i < limit; i++) {
+        var customer = query[i];
+        var listItem = document.createElement('span');
+        listItem.style.cursor = "pointer";
+        listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start');
+        listItem.textContent = "".concat(customer.name);
+        customersList.appendChild(listItem);
+      }
+    } else if (_getData.search.value != '') {
+      customersList.innerHTML = "<span class=\"text-danger py-3\">No se encontr\xF3 ningun resultado para: <span class=\"fw-bold\">".concat(_getData.search.value, "</span></span>");
+    }
+  });
+  customersList.addEventListener('click', function (e) {
+    _getData.search.value = e.target.textContent;
+    customersList.style.display = "none";
   });
 });
 
