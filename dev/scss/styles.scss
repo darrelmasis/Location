@@ -1,9 +1,27 @@
 @import "./vendors/bootstrap";
 
 .list-group--custom {
-  position: absolute;
+  // position: absolute;
   left: 0;
   right:0;
   // max-height: 300px;
   // overflow-y: scroll;
+}
+
+#search {
+  box-shadow: none;
+  border: none;
+}
+
+.fake-box {
+  border-radius: 1rem;
+  border: 1px solid $gray-300;
+}
+
+svg {
+  width: 1rem;
+}
+
+.list-group-item:last-child {
+  margin-bottom: 1rem;
 }
