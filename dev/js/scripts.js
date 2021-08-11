@@ -1,59 +1,40 @@
-import { getData } from "./modules/getData";
-// import { search } from "./modules/getData";
-/**
- * ***Tareas***
- * Módulo para crear elementos del DOM
- * Módulo de busqueda y respuesta
- * 
- */
-const customersList = document.getElementById("customersList")
-const searchInput = document.getElementById("search")
+import { getData } from './modules/core'
+import { search } from './modules/core'
+import { createCustomElement, select, addAttributes} from './modules/dom'
 
-getData('../../dist/json/customers.json').then(data => {
-  let data = data.customers
+const customerList = select('customersList', 'id')
+const searchInput = select('search', 'id')
+let dataUrl = '../../dist/json/customers.json'
+
+getData(dataUrl)
+.then(result => {
+  let data = result.customers
+  let limit = 5
+
   
-  searchInput.addEventListener('keyup', e => {
-    console.log(e)
+  searchInput.addEventListener('keyup', () => {
+    let query = searchInput.value
+    let queryResponse = ''
+    query != '' ? queryResponse = search(query, data) : null
 
-    // let queryResult = search()
+    queryResponse.length < limit ? limit = queryResponse.length : null
 
-
-    // let searchValue = search.value;
-    // let expression = new RegExp(`${searchValue}.*`, "i")
-    // let query = ''
-    // if (searchValue != '') {
-    //   query = customers.filter(customer => expression.test(customer.name))
-    // customersList.style.display = "block"
-
-    })
-
-  //   if (customersList.hasChildNodes()) {
-  //     while (customersList.childNodes.length >= 1) {
-  //       customersList.removeChild(customersList.firstChild)
-  //     }
-  //   }
-
-  //   if(query.length > 0) {
-  //     let limit = 5;
-  //     if(query.length < limit) {
-  //       limit = query.length
-  //     }
-  //     for (let i = 0; i < limit; i++) {
-  //       let customer = query[i];
-  //       const listItem = document.createElement('span')
-  //       listItem.style.cursor = "pointer"
-  //       listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start')
-  //       listItem.textContent = `${customer.name}`
-  //       customersList.appendChild(listItem)
-  //     }
-  //   } else if (search.value != '') {
-  //     customersList.innerHTML = `<span class="text-danger py-3">No se encontró ningun resultado para: <span class="fw-bold">${search.value}</span></span>`
-  //   }
-
-  // })
-  // customersList.addEventListener('click', e => {
-  //   search.value = e.target.textContent
-  //   customersList.style.display = "none"
-  // })
-
+    if(customerList.hasChildNodes()) {
+      while (customerList.childNodes.length >= 1) {
+        customerList.removeChild(customerList.firstChild)
+      }
+    }
+    
+    if (queryResponse.length) {
+      for (let i = 0; i <= limit; i++) {
+        let customer = queryResponse[i]
+        // console.log(customer.name)
+        let listItem = createCustomElement('div', { class: 'list-group-item list-group-item-action text-start'}, [customer.name])
+        customerList.appendChild(listItem)
+  
+      }
+    } else if(query != '') {
+      customerList.style.display = "block"
+    }
+  })
 })

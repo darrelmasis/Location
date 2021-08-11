@@ -6,6 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.search = exports.getData = void 0;
 
+/**
+ * Obtiene datos de un archivo JSON
+ * @param {string} url la ruta del archivo JSON
+ * @returns promise
+ */
 var getData = function getData(url) {
   var response = fetch(url).then(function (response) {
     return response.json();
@@ -14,8 +19,9 @@ var getData = function getData(url) {
 };
 /**
  * 
- * @param {string} query 
- * @param {array} data 
+ * @param {string} query criterio de búsqueda
+ * @param {array} data data a procesar
+ * @returns array
  */
 
 
@@ -23,9 +29,10 @@ exports.getData = getData;
 
 var search = function search(query, data) {
   var expression = new RegExp("".concat(query), 'i');
-  data.filter(function (result) {
-    return expression.test(result);
+  var queryResponse = data.filter(function (result) {
+    return expression.test(result.name);
   });
+  return queryResponse;
 };
 
 exports.search = search;
@@ -33,62 +40,120 @@ exports.search = search;
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var _getData = require("./modules/getData");
-
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addAttributes = exports.createCustomElement = exports.select = void 0;
+var id = document.getElementById.bind(document);
+var q = document.querySelector.bind(document);
+var all = document.querySelectorAll.bind(document);
 /**
- * ***Tareas***
- * Módulo para crear elementos del DOM
- * Módulo de busqueda y respuesta
  * 
+ * @param {string} elementSelector 
+ * @param {int} type 
+ * @returns DOM element
  */
-var customersList = document.getElementById("customersList");
-var searchInput = document.getElementById("search");
-(0, _getData.getData)('../../dist/json/customers.json').then(function (data) {
-  var customers = data.customers;
-  searchInput.addEventListener('keyup', function () {
-    var queryResult = (0, _getData.search)();
-    var searchValue = _getData.search.value;
-    var expression = new RegExp("".concat(searchValue, ".*"), "i");
-    var query = '';
 
-    if (searchValue != '') {
-      query = customers.filter(function (customer) {
-        return expression.test(customer.name);
-      });
-      customersList.style.display = "block";
-    }
+var select = function select(elementSelector) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'id';
+  var domElement = '';
 
-    if (customersList.hasChildNodes()) {
-      while (customersList.childNodes.length >= 1) {
-        customersList.removeChild(customersList.firstChild);
-      }
-    }
+  switch (type) {
+    case 'q':
+      domElement = q(elementSelector);
+      break;
 
-    if (query.length > 0) {
-      var limit = 5;
+    case 'all':
+      domElement = all(elementSelector);
+      break;
 
-      if (query.length < limit) {
-        limit = query.length;
-      }
+    default:
+      domElement = id(elementSelector);
+      break;
+  }
 
-      for (var i = 0; i < limit; i++) {
-        var customer = query[i];
-        var listItem = document.createElement('span');
-        listItem.style.cursor = "pointer";
-        listItem.classList.add('list-group-item', 'list-group-item-action', 'text-start');
-        listItem.textContent = "".concat(customer.name);
-        customersList.appendChild(listItem);
-      }
-    } else if (_getData.search.value != '') {
-      customersList.innerHTML = "<span class=\"text-danger py-3\">No se encontr\xF3 ningun resultado para: <span class=\"fw-bold\">".concat(_getData.search.value, "</span></span>");
+  return domElement;
+};
+/**
+ * Crea elementos con atributos e hijos
+ * @param {DOM element} element 
+ * @param {string} attributes 
+ * @param {string} children 
+ * @returns DOM Element
+ */
+
+
+exports.select = select;
+
+var createCustomElement = function createCustomElement(element, attributes, children) {
+  var customElement = document.createElement(element);
+  if (children !== undefined) children.forEach(function (el) {
+    if (el.nodeType) {
+      if (el.nodeType === 1 || el.nodeType === 11) customElement.appendChild(el);
+    } else {
+      customElement.innerHTML += el;
     }
   });
-  customersList.addEventListener('click', function (e) {
-    _getData.search.value = e.target.textContent;
-    customersList.style.display = "none";
+  addAttributes(customElement, attributes);
+  return customElement;
+};
+/**
+ * Añade un objeto de atributos a un elemento
+ * @param {DOM element} element 
+ * @param {object} attrObj 
+ */
+
+
+exports.createCustomElement = createCustomElement;
+
+var addAttributes = function addAttributes(element, attrObj) {
+  for (var attr in attrObj) {
+    if (attrObj.hasOwnProperty(attr)) element.setAttribute(attr, attrObj[attr]);
+  }
+};
+
+exports.addAttributes = addAttributes;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+var _core = require("./modules/core");
+
+var _dom = require("./modules/dom");
+
+var customerList = (0, _dom.select)('customersList', 'id');
+var searchInput = (0, _dom.select)('search', 'id');
+var dataUrl = '../../dist/json/customers.json';
+(0, _core.getData)(dataUrl).then(function (result) {
+  var data = result.customers;
+  var limit = 5;
+  searchInput.addEventListener('keyup', function () {
+    var query = searchInput.value;
+    var queryResponse = '';
+    query != '' ? queryResponse = (0, _core.search)(query, data) : null;
+    queryResponse.length < limit ? limit = queryResponse.length : null;
+
+    if (customerList.hasChildNodes()) {
+      while (customerList.childNodes.length >= 1) {
+        customerList.removeChild(customerList.firstChild);
+      }
+    }
+
+    if (queryResponse.length) {
+      for (var i = 0; i <= limit; i++) {
+        var customer = queryResponse[i]; // console.log(customer.name)
+
+        var listItem = (0, _dom.createCustomElement)('div', {
+          class: 'list-group-item list-group-item-action text-start'
+        }, [customer.name]);
+        customerList.appendChild(listItem);
+      }
+    } else if (query != '') {
+      customerList.style.display = "block";
+    }
   });
 });
 
-},{"./modules/getData":1}]},{},[2]);
+},{"./modules/core":1,"./modules/dom":2}]},{},[3]);
 
 //# sourceMappingURL=scripts.js.map
