@@ -126,12 +126,12 @@ var searchInput = (0, _dom.select)('search', 'id');
 var dataUrl = '../../dist/json/customers.json';
 (0, _core.getData)(dataUrl).then(function (result) {
   var data = result.customers;
-  var limit = 5;
-  searchInput.addEventListener('keyup', function () {
+  var limit;
+  searchInput.addEventListener('input', function () {
     var query = searchInput.value;
     var queryResponse = '';
     query != '' ? queryResponse = (0, _core.search)(query, data) : null;
-    queryResponse.length < limit ? limit = queryResponse.length : null;
+    queryResponse.length < limit ? limit = queryResponse.length : limit = 5;
 
     if (customerList.hasChildNodes()) {
       while (customerList.childNodes.length >= 1) {
@@ -139,18 +139,23 @@ var dataUrl = '../../dist/json/customers.json';
       }
     }
 
-    if (queryResponse.length) {
+    if (queryResponse.length > 0) {
       for (var i = 0; i <= limit; i++) {
-        var customer = queryResponse[i]; // console.log(customer.name)
-
-        var listItem = (0, _dom.createCustomElement)('div', {
-          class: 'list-group-item list-group-item-action text-start'
-        }, [customer.name]);
+        var customer = queryResponse[i];
+        var content = (0, _dom.createCustomElement)('span', null, ["<span class=\"text-secondary\">".concat(customer.id, " - </span> ").concat(customer.name)]);
+        var listItem = (0, _dom.createCustomElement)('a', {
+          href: "./?q=".concat(customer.id.toLowerCase()),
+          class: 'list-group-item d-flex list-group-item-action border-0'
+        }, [content]);
         customerList.appendChild(listItem);
       }
     } else if (query != '') {
       customerList.style.display = "block";
     }
+
+    customerList.addEventListener('click', function (e) {
+      searchInput.value = e.target.innerText;
+    });
   });
 });
 

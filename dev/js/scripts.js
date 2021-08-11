@@ -9,15 +9,15 @@ let dataUrl = '../../dist/json/customers.json'
 getData(dataUrl)
 .then(result => {
   let data = result.customers
-  let limit = 5
+  let limit
 
   
-  searchInput.addEventListener('keyup', () => {
+  searchInput.addEventListener('input', () => {
     let query = searchInput.value
     let queryResponse = ''
     query != '' ? queryResponse = search(query, data) : null
 
-    queryResponse.length < limit ? limit = queryResponse.length : null
+    queryResponse.length < limit ? limit = queryResponse.length : limit = 5
 
     if(customerList.hasChildNodes()) {
       while (customerList.childNodes.length >= 1) {
@@ -25,16 +25,20 @@ getData(dataUrl)
       }
     }
     
-    if (queryResponse.length) {
+    if (queryResponse.length > 0) {
       for (let i = 0; i <= limit; i++) {
-        let customer = queryResponse[i]
-        // console.log(customer.name)
-        let listItem = createCustomElement('div', { class: 'list-group-item list-group-item-action text-start'}, [customer.name])
+        let customer = queryResponse[i];
+        let content = createCustomElement('span', null, [`<span class="text-secondary">${customer.id} - </span> ${customer.name}`])
+        let listItem = createCustomElement('a', {href: `./?q=${customer.id.toLowerCase()}`, class: 'list-group-item d-flex list-group-item-action border-0'}, [content])
         customerList.appendChild(listItem)
   
       }
     } else if(query != '') {
       customerList.style.display = "block"
     }
+
+    customerList.addEventListener('click', e => {
+      searchInput.value = e.target.innerText
+    })
   })
 })

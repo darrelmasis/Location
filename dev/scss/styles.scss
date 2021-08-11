@@ -3,7 +3,7 @@
 .list-group--custom {
   // position: absolute;
   left: 0;
-  right:0;
+  right: 0;
   // max-height: 300px;
   // overflow-y: scroll;
 }
@@ -22,6 +22,10 @@ svg {
   width: 1rem;
 }
 
-.list-group-item:last-child {
-  margin-bottom: 1rem;
+.list-group-item {
+  // cursor: default;
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
 }
